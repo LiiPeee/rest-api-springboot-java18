@@ -1,22 +1,38 @@
 package com.br.restapi.model;
 
+import jakarta.persistence.*;
+
 import java.io.Serializable;
+@Entity
+@Table(name = "person")
+public class PersonEntity implements Serializable{
 
-public class Person implements Serializable{
 
 
-    private final static long serialVersionUID = 1L;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "first_name", nullable = false, length = 80)
     private String firstName;
+    @Column(name = "last_name",nullable = false,length = 80)
     private String lastName;
+    @Column(nullable = false, length = 100)
     private String addres;
+    @Column(nullable = false, length = 10)
     private String gender;
 
     
-    public Person() {
+    public PersonEntity() {
     }
 
+    public PersonEntity(Long id, String firstName, String lastName, String addres, String gender) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.addres = addres;
+        this.gender = gender;
+    }
 
     public Long getId() {
         return id;

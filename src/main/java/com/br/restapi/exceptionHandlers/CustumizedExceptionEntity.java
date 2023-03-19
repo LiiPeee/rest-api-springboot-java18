@@ -14,7 +14,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestController
 public class CustumizedExceptionEntity extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({BadRequest.class,
+    })
     public final ResponseEntity<ExceptionResponse>handleAllExceptions(Exception ex, WebRequest request){
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),request.getDescription(false));
     

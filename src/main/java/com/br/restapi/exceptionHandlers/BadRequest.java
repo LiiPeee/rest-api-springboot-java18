@@ -1,12 +1,12 @@
-package com.br.restapi.exception;
+package com.br.restapi.exceptionHandlers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class ExceptionOperation extends RuntimeException{
+public class BadRequest extends RuntimeException{
 
-    public ExceptionOperation(String ex){
+    public BadRequest(String ex){
         super(ex);
     }
 
