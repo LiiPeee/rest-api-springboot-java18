@@ -14,12 +14,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestController
 public class CustumizedExceptionEntity extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({BadRequest.class,
+    @ExceptionHandler({NotFoundRequest.class,
     })
-    public final ResponseEntity<ExceptionResponse>handleAllExceptions(Exception ex, WebRequest request){
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),request.getDescription(false));
+    public final ResponseEntity<ExceptionResponse>handleNotFoundExceptions(Exception ex, WebRequest request){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
     
-    return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
 
     }
 }

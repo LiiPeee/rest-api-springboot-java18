@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.br.restapi.model.PersonEntity;
+
 import com.br.restapi.services.PersonService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,14 +28,14 @@ public class PersonController {
 
     @GetMapping(
     produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<PersonEntity> findAll(){
+    public List<PersonEntityVo> findAll(){
         return personService.findAll();
     }
 
 
     @GetMapping(value="/{id}",
     produces = MediaType.APPLICATION_JSON_VALUE)
-    public PersonEntity findById(@PathVariable(value = "id")String id) throws Exception{
+    public PersonEntityVo findById(@PathVariable(value = "id")Long id){
         return personService.findById(id);
     }
 
@@ -43,18 +43,18 @@ public class PersonController {
     @PostMapping(
     consumes = MediaType.APPLICATION_JSON_VALUE,
     produces = MediaType.APPLICATION_JSON_VALUE)
-    public PersonEntity createPerson(@RequestBody PersonEntity person){
+    public PersonEntityVo createPerson(@RequestBody PersonEntityVo person){
         return personService.createPerson(person);
     }
     @PutMapping(
     consumes = MediaType.APPLICATION_JSON_VALUE,
     produces = MediaType.APPLICATION_JSON_VALUE)
-    public PersonEntity updatePerson(@RequestBody PersonEntity person){
+    public PersonEntityVo updatePerson(@RequestBody PersonEntityVo person){
         return personService.updatPerson(person);
     }
     @DeleteMapping(value = "{id}",
     produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deletePerson(@PathVariable (value ="id")String id) throws Exception{
+    public void deletePerson(@PathVariable (value ="id")Long id){
         personService.deletePerson(id);
     }
      

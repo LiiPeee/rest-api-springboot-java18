@@ -5,70 +5,68 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
+import com.br.restapi.data.vo.v1.PersonEntityVo;
+import com.br.restapi.exceptionHandlers.CustumizedExceptionEntity;
+import com.br.restapi.exceptionHandlers.NotFoundRequest;
+import com.br.restapi.repositories.PersonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.br.restapi.model.PersonEntity;
+
 
 @Service
 public class PersonService {
 
-    private final AtomicLong counter = new AtomicLong();
+    @Autowired
+    private PersonRepository personRepository;
+
     private Logger logger = Logger.getLogger(PersonService.class.getName());
 
-    public PersonEntity createPerson(PersonEntity person){
+    public PersonEntityVo createPerson(PersonEntityVo person){
         logger.info("Create person");
     
-        return person;
+        return personRepository.save(person);
     }
 
-    public PersonEntity updatPerson(PersonEntity person){
-        logger.info("Create person");
 
-        person.setFirstName("Felipe");
-        person.setLastName("Jão");
-        person.setGender("Masculino");
-        person.setAddres("BH é nois");
-        return person;
+    public PersonEntityVo updatPerson(PersonEntityVo person){
+        logger.info("Update person");
+
+        PersonEntityVo person1 = personRepository.findById(person.getId()).orElseThrow(() -> new NotFoundRequest("person not found "));
+
+        person1.setFirstName(person.getFirstName());
+        person1.setLastName(person.getLastName());
+        person1.setAddres(person.getAddres());
+
+        person1.setGender(person.getGender());
+
+        return personRepository.save(person1);
     }
-    public void deletePerson(String id){
-
-        logger.info("Delete person"); 
-    }
-
-    public List<PersonEntity> findAll(){
-        logger.info("Find All");
-        
-        
-        List<PersonEntity> persons = new ArrayList<>();
-        for(int i = 0; i < 8; i++){
-            PersonEntity person = mockPerson(i);
-            persons.add(person);
-        }
-        return persons;
-
-    }
-    
-
-    public PersonEntity findById(String id){
+    public PersonEntityVo findById(Long id){
 
         logger.info("Findding id");
 
-        PersonEntity person = new PersonEntity();
-        person.setId(counter.incrementAndGet());
-        person.setFirstName("Felipe");
-        person.setLastName("Cruz");
-        person.setAddres("Belo Horizonte");
-        person.setGender("Masculino");
 
-        return person;
+        return personRepository.findById(id).orElseThrow(() -> new NotFoundRequest("id not found"));
     }
-    private PersonEntity mockPerson(int i){
-        PersonEntity person = new PersonEntity();
-        person.setId(counter.incrementAndGet());
-        person.setFirstName("Person name " + i);
-        person.setLastName("Last name" + i);
-        person.setAddres("Some Address in Brasil" + i);
-        person.setGender("Male");
-        return person;
+    public List<PersonEntityVo> findAll(){
+        logger.info("Find All");
+
+        return personRepository.findAll();
+
     }
+    public void deletePerson(Long id){
+
+        logger.info("Delete person");
+
+        PersonEntityVo person = personRepository.findById(id).orElseThrow(() -> new NotFoundRequest("person not found for deletion"));
+
+        personRepository.delete(person);
+    }
+
+
+    
+
+
+
 }
